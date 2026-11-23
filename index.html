@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>랜덤 카드 뽑기</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Noto Sans KR",
+        sans-serif;
+
+    background: linear-gradient(135deg, #f5f0ff, #eef6ff);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: #222;
+}
+
+.container {
+    width: 92%;
+    max-width: 950px;
+
+    text-align: center;
+
+    padding: 40px 20px;
+}
+
+/* 제목 */
+
+h1 {
+    font-size: 42px;
+    margin: 0 0 30px;
+}
+
+/* 이름 입력 */
+
+#titleInput {
+    width: 100%;
+    max-width: 650px;
+
+    padding: 18px 25px;
+
+    font-size: 30px;
+    font-weight: bold;
+
+    text-align: center;
+
+    border: 3px solid #222;
+    border-radius: 18px;
+
+    outline: none;
+
+    background: white;
+}
+
+#titleInput:focus {
+    border-color: #8b5cf6;
+}
+
+#titleInput::placeholder {
+    color: #aaa;
+}
+
+/* 결과 제목 */
+
+#resultTitle {
+    margin-top: 30px;
+    margin-bottom: 25px;
+
+    min-height: 95px;
+
+    font-weight: 900;
+}
+
+/* 입력한 이름 */
+
+.name {
+    display: block;
+
+    font-size: 38px;
+
+    margin-bottom: 5px;
+}
+
+/* 카드1, 카드2 */
+
+.subtitle {
+    display: block;
+
+    font-size: 30px;
+}
+
+/* 카드 영역 */
+
+.cards {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 30px;
+
+    margin: 20px 0 35px;
+}
+
+/* 카드 */
+
+.card {
+    width: 330px;
+    height: 430px;
+
+    background: white;
+
+    border: 4px solid #222;
+    border-radius: 28px;
+
+    box-shadow: 8px 8px 0 #222;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    transition: transform 0.15s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-label {
+    font-size: 19px;
+
+    font-weight: bold;
+
+    color: #888;
+
+    margin-bottom: 30px;
+}
+
+.card-name {
+    font-size: 34px;
+
+    font-weight: 900;
+
+    padding: 20px;
+
+    word-break: keep-all;
+}
+
+/* 버튼 */
+
+button {
+    padding: 17px 32px;
+
+    border-radius: 15px;
+
+    font-size: 21px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    margin: 5px;
+
+    transition: 0.15s;
+}
+
+#drawButton {
+    border: none;
+
+    background: #222;
+
+    color: white;
+}
+
+#drawButton:hover {
+    transform: scale(1.05);
+}
+
+#drawButton:disabled {
+    background: #aaa;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+#resetButton {
+    background: white;
+
+    color: #222;
+
+    border: 3px solid #222;
+}
+
+#resetButton:hover {
+    background: #eee;
+}
+
+/* 남은 카드 */
+
+#remaining {
+    margin-top: 25px;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    color: #666;
+}
+
+/* 모바일 */
+
+@media (max-width: 700px) {
+
+    .container {
+        padding: 30px 10px;
+    }
+
+    h1 {
+        font-size: 32px;
+    }
+
+    #titleInput {
+        font-size: 23px;
+    }
+
+    #resultTitle {
+        min-height: 75px;
+    }
+
+    .name {
+        font-size: 30px;
+    }
+
+    .subtitle {
+        font-size: 24px;
+    }
+
+    .cards {
+        flex-direction: column;
+
+        align-items: center;
+
+        gap: 25px;
+    }
+
+    .card {
+        width: 90%;
+        max-width: 330px;
+
+        height: 350px;
+    }
+
+    .card-name {
+        font-size: 30px;
+    }
+
+    button {
+        font-size: 19px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🎴 랜덤 카드 뽑기</h1>
+
+    <!-- 이름 입력 -->
+    <input
+        type="text"
+        id="titleInput"
+        placeholder="이름을 입력하세요"
+        maxlength="30"
+    >
+
+    <!-- 결과 -->
+    <div id="resultTitle">
+        <span class="name"></span>
+        <span class="subtitle">카드1, 카드2</span>
+    </div>
+
+    <!-- 카드 -->
+    <div class="cards">
+
+        <div class="card">
+            <div class="card-label">CARD 1</div>
+
+            <div
+                id="card1"
+                class="card-name">
+                ?
+            </div>
+        </div>
+
+
+        <div class="card">
+            <div class="card-label">CARD 2</div>
+
+            <div
+                id="card2"
+                class="card-name">
+                ?
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- 버튼 -->
+
+    <button
+        id="drawButton"
+        onclick="drawCards()">
+        🎴 카드 뽑기
+    </button>
+
+
+    <button
+        id="resetButton"
+        onclick="resetGame()">
+        🔄 초기화
+    </button>
+
+
+    <!-- 남은 카드 -->
+
+    <div id="remaining">
+        남은 카드: 0장
+    </div>
+
+</div>
+
+
+<script>
+
+/* ==================================================
+   카드 목록
+================================================== */
+
+const cards = [
+    "집 있는 거지",
+    "집 없는 거지",
+    "재벌",
+    "코미디언",
+    "노동자",
+    "의사",
+    "야구선수",
+    "조직폭력배 두목",
+    "찐따",
+    "일진",
+    "아이돌",
+    "배우",
+    "팬",
+    "대학생",
+    "고등학생",
+    "아저씨",
+    "중학생",
+    "과외 선생님",
+    "선생님",
+    "백수",
+    "간호사",
+    "변호사",
+    "환자",
+    "시한부",
+    "마술사",
+    "삐에로",
+    "요리사",
+    "판사",
+    "검사",
+    "경찰",
+    "소방관",
+    "교도관",
+    "죄수",
+    "시인",
+    "소설가",
+    "기자",
+    "pd",
+    "뮤지컬 배우",
+    "국회의원",
+    "대통령",
+    "청소부",
+    "주부",
+    "돌싱",
+    "바람둥이",
+    "카사노바",
+    "유튜버",
+    "BJ",
+    "아나운서",
+    "피겨 선수",
+    "축구 선수",
+    "매니저",
+    "래퍼",
+    "스님",
+    "목사 아들",
+    "기독교",
+    "신부님",
+    "유치원 선생님",
+    "킬러",
+    "영화 감독",
+    "조명 감독",
+    "어부",
+    "마케터",
+    "농부",
+    "수영 선수",
+    "인플루언서",
+    "멘헤라",
+    "안정형",
+    "우울증",
+    "분노조절장애",
+    "adhd",
+    "센티넬",
+    "가이드",
+    "오메가",
+    "알파",
+    "베타",
+    "수인",
+    "왕",
+    "백성",
+    "황후",
+    "왕비",
+    "후궁",
+    "첩",
+    "마법사",
+    "하녀",
+    "귀신",
+    "주술사",
+    "무당",
+    "퇴마사",
+    "정비공",
+    "대리기사",
+    "택시 기사",
+    "버스 기사",
+    "학원 선생님",
+    "조교",
+    "호텔리어",
+    "승무원",
+    "비행기 기장",
+    "스타일리스트",
+    "디자이너",
+    "모델",
+    "사진 기사",
+    "화가",
+    "배달원",
+    "트로트 가수",
+    "틱톡커",
+    "F1 드라이버",
+    "농구 선수",
+    "배구 선수",
+    "미용사",
+    "정육점 사장님",
+    "싱글 대디",
+    "연프 출연자",
+    "첫사랑",
+    "자영업자",
+    "카페 알바생",
+    "고아",
+    "건달",
+    "테러리스트",
+    "오타쿠",
+    "회사원",
+    "천사",
+    "악마",
+    "사장님",
+    "안경사",
+    "스토커",
+    "독립운동가",
+    "친일파",
+    "유학생",
+    "라이프가드",
+    "바텐더"
+];
+
+
+/* ==================================================
+   현재 남아있는 카드
+================================================== */
+
+let remainingCards = [...cards];
+
+
+/* ==================================================
+   카드 뽑기
+================================================== */
+
+function drawCards() {
+
+    /*
+       카드가 2장 미만이면 뽑을 수 없음
+    */
+
+    if (remainingCards.length < 2) {
+
+        document.getElementById("card1").textContent = "소진";
+        document.getElementById("card2").textContent = "소진";
+
+        document.getElementById("resultTitle").innerHTML =
+            `
+            <span class="name">카드 소진!</span>
+            <span class="subtitle">초기화해서 다시 뽑아주세요</span>
+            `;
+
+        document.getElementById("drawButton").disabled = true;
+
+        return;
+    }
+
+
+    /*
+       첫 번째 카드 랜덤 선택
+    */
+
+    const index1 =
+        Math.floor(
+            Math.random() * remainingCards.length
+        );
+
+    const card1 =
+        remainingCards[index1];
+
+
+    /*
+       뽑은 카드 삭제
+
+       이걸 하기 때문에
+       같은 카드가 다시 나오지 않음
+    */
+
+    remainingCards.splice(index1, 1);
+
+
+    /*
+       두 번째 카드 랜덤 선택
+    */
+
+    const index2 =
+        Math.floor(
+            Math.random() * remainingCards.length
+        );
+
+    const card2 =
+        remainingCards[index2];
+
+
+    /*
+       두 번째 카드도 삭제
+    */
+
+    remainingCards.splice(index2, 1);
+
+
+    /*
+       카드 화면에 표시
+    */
+
+    document.getElementById("card1").textContent = card1;
+
+    document.getElementById("card2").textContent = card2;
+
+
+    /*
+       입력한 이름 가져오기
+    */
+
+    const name =
+        document
+            .getElementById("titleInput")
+            .value
+            .trim();
+
+
+    /*
+       이름이 있으면
+
+       윤진
+       카드1, 카드2
+
+       형식으로 표시
+    */
+
+    if (name !== "") {
+
+        document.getElementById("resultTitle").innerHTML =
+            `
+            <span class="name">${escapeHTML(name)}</span>
+            <span class="subtitle">카드1, 카드2</span>
+            `;
+
+    } else {
+
+        document.getElementById("resultTitle").innerHTML =
+            `
+            <span class="name"></span>
+            <span class="subtitle">카드1, 카드2</span>
+            `;
+    }
+
+
+    /*
+       남은 카드 수 업데이트
+    */
+
+    updateRemaining();
+
+
+    /*
+       카드가 모두 소진되었는지 확인
+    */
+
+    if (remainingCards.length === 0) {
+
+        document.getElementById("drawButton").disabled = true;
+
+        document.getElementById("resultTitle").innerHTML +=
+            `
+            <span class="subtitle">
+                🎉 모든 카드가 소진되었습니다!
+            </span>
+            `;
+    }
+}
+
+
+/* ==================================================
+   HTML 입력 방지
+================================================== */
+
+function escapeHTML(text) {
+
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+/* ==================================================
+   남은 카드 표시
+================================================== */
+
+function updateRemaining() {
+
+    document.getElementById("remaining").textContent =
+        `남은 카드: ${remainingCards.length}장`;
+}
+
+
+/* ==================================================
+   초기화
+================================================== */
+
+function resetGame() {
+
+    /*
+       카드 전체 복구
+    */
+
+    remainingCards = [...cards];
+
+
+    /*
+       카드 화면 초기화
+    */
+
+    document.getElementById("card1").textContent = "?";
+
+    document.getElementById("card2").textContent = "?";
+
+
+    /*
+       결과 초기화
+    */
+
+    document.getElementById("resultTitle").innerHTML =
+        `
+        <span class="name"></span>
+        <span class="subtitle">카드1, 카드2</span>
+        `;
+
+
+    /*
+       뽑기 버튼 다시 활성화
+    */
+
+    document.getElementById("drawButton").disabled = false;
+
+
+    /*
+       카드 수 업데이트
+    */
+
+    updateRemaining();
+}
+
+
+/* ==================================================
+   처음 실행
+================================================== */
+
+updateRemaining();
+
+</script>
+
+</body>
+</html>
