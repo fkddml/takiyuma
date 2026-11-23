@@ -96,7 +96,7 @@ h1 {
     margin-bottom: 5px;
 }
 
-/* 카드1, 카드2 */
+/* 공, 수 */
 
 .subtitle {
     display: block;
@@ -486,7 +486,36 @@ const cards = [
     "친일파",
     "유학생",
     "라이프가드",
-    "바텐더"
+    "바텐더",
+
+    /* 추가 카드 */
+    "재수생",
+    "편의점 알바생",
+    "작곡가",
+    "싸이코패스",
+    "기억상실증",
+    "모범생",
+    "반장",
+    "외국인",
+    "도주중인",
+    "범죄자",
+    "불치병",
+    "여장",
+    "피아니스트",
+    "메이드",
+    "집사",
+    "도련님",
+    "게임중독자",
+    "히키코모리",
+    "리더",
+    "메인댄서",
+    "메인래퍼",
+    "메인보컬",
+    "회장",
+    "흡연자",
+    "헤테로",
+    "게이",
+    "호모포비아"
 ];
 
 
@@ -502,10 +531,6 @@ let remainingCards = [...cards];
 ================================================== */
 
 function drawCards() {
-
-    /*
-       카드가 2장 미만이면 뽑을 수 없음
-    */
 
     if (remainingCards.length < 2) {
 
@@ -524,9 +549,7 @@ function drawCards() {
     }
 
 
-    /*
-       첫 번째 카드 랜덤 선택
-    */
+    /* 첫 번째 카드 */
 
     const index1 =
         Math.floor(
@@ -537,19 +560,12 @@ function drawCards() {
         remainingCards[index1];
 
 
-    /*
-       뽑은 카드 삭제
-
-       이걸 하기 때문에
-       같은 카드가 다시 나오지 않음
-    */
+    /* 첫 번째 카드 제거 */
 
     remainingCards.splice(index1, 1);
 
 
-    /*
-       두 번째 카드 랜덤 선택
-    */
+    /* 두 번째 카드 */
 
     const index2 =
         Math.floor(
@@ -560,25 +576,19 @@ function drawCards() {
         remainingCards[index2];
 
 
-    /*
-       두 번째 카드도 삭제
-    */
+    /* 두 번째 카드 제거 */
 
     remainingCards.splice(index2, 1);
 
 
-    /*
-       카드 화면에 표시
-    */
+    /* 카드 표시 */
 
     document.getElementById("card1").textContent = card1;
 
     document.getElementById("card2").textContent = card2;
 
 
-    /*
-       입력한 이름 가져오기
-    */
+    /* 입력한 이름 */
 
     const name =
         document
@@ -586,15 +596,6 @@ function drawCards() {
             .value
             .trim();
 
-
-    /*
-       이름이 있으면
-
-       윤진
-       카드1, 카드2
-
-       형식으로 표시
-    */
 
     if (name !== "") {
 
@@ -614,16 +615,12 @@ function drawCards() {
     }
 
 
-    /*
-       남은 카드 수 업데이트
-    */
+    /* 남은 카드 */
 
     updateRemaining();
 
 
-    /*
-       카드가 모두 소진되었는지 확인
-    */
+    /* 전부 소진 */
 
     if (remainingCards.length === 0) {
 
@@ -671,25 +668,11 @@ function updateRemaining() {
 
 function resetGame() {
 
-    /*
-       카드 전체 복구
-    */
-
     remainingCards = [...cards];
-
-
-    /*
-       카드 화면 초기화
-    */
 
     document.getElementById("card1").textContent = "?";
 
     document.getElementById("card2").textContent = "?";
-
-
-    /*
-       결과 초기화
-    */
 
     document.getElementById("resultTitle").innerHTML =
         `
@@ -697,17 +680,7 @@ function resetGame() {
         <span class="subtitle">공, 수</span>
         `;
 
-
-    /*
-       뽑기 버튼 다시 활성화
-    */
-
     document.getElementById("drawButton").disabled = false;
-
-
-    /*
-       카드 수 업데이트
-    */
 
     updateRemaining();
 }
