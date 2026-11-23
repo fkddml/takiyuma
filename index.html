@@ -302,7 +302,7 @@ button {
     <div class="cards">
 
         <div class="card">
-            <div class="card-label">CARD 1</div>
+            <div class="card-label">공</div>
 
             <div
                 id="card1"
@@ -313,7 +313,7 @@ button {
 
 
         <div class="card">
-            <div class="card-label">CARD 2</div>
+            <div class="card-label">수</div>
 
             <div
                 id="card2"
@@ -601,7 +601,7 @@ function drawCards() {
         document.getElementById("resultTitle").innerHTML =
             `
             <span class="name">${escapeHTML(name)}</span>
-            <span class="subtitle">카드1, 카드2</span>
+            <span class="subtitle">공, 수</span>
             `;
 
     } else {
@@ -609,7 +609,7 @@ function drawCards() {
         document.getElementById("resultTitle").innerHTML =
             `
             <span class="name"></span>
-            <span class="subtitle">카드1, 카드2</span>
+            <span class="subtitle">공, 수</span>
             `;
     }
 
@@ -632,7 +632,7 @@ function drawCards() {
         document.getElementById("resultTitle").innerHTML +=
             `
             <span class="subtitle">
-                🎉 모든 카드가 소진되었습니다!
+                모든 카드가 소진되었습니다!
             </span>
             `;
     }
@@ -694,7 +694,7 @@ function resetGame() {
     document.getElementById("resultTitle").innerHTML =
         `
         <span class="name"></span>
-        <span class="subtitle">카드1, 카드2</span>
+        <span class="subtitle">공, 수</span>
         `;
 
 
